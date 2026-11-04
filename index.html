@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f5f6f8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1115" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="Track job applications, follow-ups and interviews." />
+
+    <!-- Installable app (iPhone: Safari → Share → Add to Home Screen) -->
+    <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Jobs" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="apple-touch-icon" href="%BASE_URL%icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%icons/icon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="%BASE_URL%icons/favicon-32.png" />
+
+    <title>Job Tracker</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
