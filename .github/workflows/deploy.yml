@@ -36,6 +36,8 @@ jobs:
           # Both are public by design; data is protected by RLS.
           VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
+          # Web push public key (VAPID). Public by design; the private half lives only in Supabase.
+          VITE_VAPID_PUBLIC_KEY: ${{ vars.VITE_VAPID_PUBLIC_KEY }}
 
       - name: Check Supabase variables were set
         run: |

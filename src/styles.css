@@ -784,3 +784,18 @@ fieldset { border: none; margin: 0; min-width: 0; }
 .confidence-word { font-weight: 700; font-size: 16px; }
 .confidence-word .muted { font-weight: 500; }
 .sheet textarea { min-height: 80px; }
+
+/* ---- Notifications card (phase 4) ---- */
+.notice {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text);
+  background: color-mix(in srgb, var(--c-orange) 14%, transparent);
+}
+.notice svg { flex: none; margin-top: 1px; color: var(--c-orange); }
+.small { font-size: 13px; }

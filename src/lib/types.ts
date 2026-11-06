@@ -69,6 +69,7 @@ export interface UserSettings {
   search_brief_updated_at: string | null;
   scout_last_run_at: string | null;
   scout_last_added: number | null;
+  digest_last_sent_on?: string | null;
 }
 
 export type SuggestionStatus = 'new' | 'saved' | 'dismissed';

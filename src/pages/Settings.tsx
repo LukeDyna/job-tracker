@@ -7,6 +7,7 @@ import { formatDateTime, todayIso } from '../lib/format';
 import { Header } from '../components/Header';
 import { toast } from '../components/Toast';
 import { InstallCard } from '../components/InstallCard';
+import { NotificationsCard } from '../components/NotificationsCard';
 import { ListRow, Pill, SectionTitle } from '../components/ui';
 
 const BRIEF_PLACEHOLDER =
@@ -126,6 +127,8 @@ export function Settings({ email }: { email: string }) {
           </div>
         </label>
       </section>
+
+      <NotificationsCard />
 
       <InstallCard />
 

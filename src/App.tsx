@@ -13,6 +13,7 @@ import { Suggestions } from './pages/Suggestions';
 import { TabBar } from './components/TabBar';
 import { ToastHost } from './components/Toast';
 import { InstallPrompt } from './components/InstallPrompt';
+import { clearAppBadge, syncPushSubscription } from './lib/push';
 
 export function App() {
   const [session, setSession] = useState<Session | null | undefined>(undefined);
@@ -48,14 +49,25 @@ export function App() {
 
   return (
     <StoreProvider userId={session.user.id} key={session.user.id}>
-      <Shell email={session.user.email ?? ''} />
+      <Shell email={session.user.email ?? ''} userId={session.user.id} />
       <InstallPrompt />
     </StoreProvider>
   );
 }
 
-function Shell({ email }: { email: string }) {
+function Shell({ email, userId }: { email: string; userId: string }) {
   const route = useRoute();
+
+  // Push: keep this device's subscription fresh, and clear the icon badge once she's looked.
+  useEffect(() => {
+    void syncPushSubscription(userId);
+    clearAppBadge();
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') clearAppBadge();
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => document.removeEventListener('visibilitychange', onVisible);
+  }, [userId]);
 
   let page;
   switch (route.name) {

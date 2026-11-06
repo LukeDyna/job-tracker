@@ -1,5 +1,5 @@
 /* Job Tracker service worker: offline app shell + web push (phase 4). */
-const CACHE = 'job-tracker-v1';
+const CACHE = 'job-tracker-v2';
 const SCOPE = self.registration.scope; // e.g. https://user.github.io/job-tracker/
 const SHELL = [SCOPE, `${SCOPE}index.html`, `${SCOPE}manifest.webmanifest`, `${SCOPE}icons/icon-192.png`];
 
@@ -53,7 +53,7 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// ---- Web push (used from phase 4) ----
+// ---- Web push: the 8am summary from the daily-digest function ----
 self.addEventListener('push', (event) => {
   let data = {};
   try {
@@ -62,15 +62,22 @@ self.addEventListener('push', (event) => {
     data = { body: event.data ? event.data.text() : '' };
   }
   const title = data.title || 'Job Tracker';
-  event.waitUntil(
+  // Links are relative to the app ("#/", "#/suggestions").
+  const url = new URL(data.url || '#/', SCOPE).href;
+  const jobs = [
     self.registration.showNotification(title, {
       body: data.body || '',
       icon: `${SCOPE}icons/icon-192.png`,
       badge: `${SCOPE}icons/icon-192.png`,
       tag: data.tag || 'job-tracker',
-      data: { url: data.url || `${SCOPE}#/` },
+      data: { url },
     }),
-  );
+  ];
+  // Red number on the Home Screen icon (cleared when the app is opened).
+  if (typeof data.badge === 'number' && self.navigator.setAppBadge) {
+    jobs.push((data.badge > 0 ? self.navigator.setAppBadge(data.badge) : self.navigator.clearAppBadge()).catch(() => {}));
+  }
+  event.waitUntil(Promise.all(jobs));
 });
 
 self.addEventListener('notificationclick', (event) => {
