@@ -15,11 +15,17 @@ If the array is empty, stop and report "No search briefs set; nothing to do."
 
 ## Step 2: for each user, search
 Read their brief carefully: role types, seniority, salary, location / commute, remote-hybrid-onsite, sectors to prefer or avoid, hours, anything else. Then:
-- Run roughly 6–10 varied web searches aimed at UK job boards and employer career pages, e.g. Indeed UK, Reed, Totaljobs, LinkedIn Jobs, Guardian Jobs, CharityJob, Jobs.ac.uk, NHS Jobs, Civil Service Jobs, W4MP, council and company career sites: whichever fit the brief. Vary job titles, synonyms and locations from the brief.
+- Run roughly 10-15 varied web searches (send them in parallel). Vary job titles, synonyms and locations from the brief, and spread them across DIFFERENT sources rather than repeating one board. Use the `allowed_domains` option of WebSearch to target one source per search. Sources to rotate through, whichever fit the brief:
+  - Aggregators and big boards: LinkedIn Jobs (linkedin.com/jobs/view pages), Indeed UK, Reed, Totaljobs, Adzuna, Jooble, CV-Library, Find a Job (findajob.dwp.gov.uk), Glassdoor.
+  - Sector boards: CharityJob, Guardian Jobs, Jobs.ac.uk, NHS Jobs, Civil Service Jobs, W4MP, Jobs Go Public, Bristol Creative Industries, The Drum / Campaign / PRWeek / MarketingWeek jobs, Third Sector Jobs, Work in Charities, Creative Access, Escape the City, Ethical Jobs.
+  - Employer-hosted applicant-tracking pages, which rarely block automated reads: workable.com, greenhouse.io, lever.co, ashbyhq.com, teamtailor.com, smartrecruiters.com, bamboohr.com, recruitee.com, pinpointhq.com, jobs.personio.com, and council / university / company career sites.
+  - Also search by employer: purpose-led, B2B, creative, public-sector and local employers in the brief's area (e.g. "careers" + company names that come up repeatedly).
 - Prefer adverts posted in the last 7 days (14 at most) that are still open. Skip anything whose closing date has passed.
-- Open promising adverts to confirm the details from the advert itself. Each suggestion's url MUST be a specific job advert page (not a search-results or listing page, not a homepage). If you cannot confirm a real, open advert, leave it out.
+- Open promising adverts with WebFetch to confirm the details from the advert itself. Each suggestion's url MUST be a specific job advert page (not a search-results or listing page, not a homepage).
+- Handling blocked pages: many boards return 403/404/410 to automated fetches. Try each domain at most twice; if it is blocked, treat that domain as blocked for the rest of the run and do not keep retrying it. Do not try to evade blocking (no spoofed browser identities, proxies or workarounds). Instead find the SAME job on another page that does load: the employer's own careers page, an ATS page, Find a Job, Adzuna, LinkedIn's public job page, or a recruiter's page. Use a search for the exact job title plus company to locate it. Submit the URL of the page you actually confirmed.
+- If no page for a promising job can be opened, you may still submit it only when at least two independent search results agree on employer, title, location and salary and the snippets show it is open (not closed or expired); in that case set match_score no higher than 3 and start match_reason with "Not opened: please check the advert before applying." Otherwise leave it out.
 - Skip anything whose "company | role title" (lower-case) is in already_known, and skip near-duplicates of the same job on several boards (keep the employer's own page or the clearest advert).
-- Quality over quantity: up to 10 strong matches per user. Submitting 0 is fine if nothing good is out there today.
+- Quality over quantity: up to 10 strong matches per user. Submitting 0 is fine if nothing good is out there today, but check at least 8 distinct sources before concluding that.
 
 ## Step 3: submit
 Write a JSON array to a temp file (e.g. `/tmp/job-scout-<first 8 chars of user_id>.json`), UTF-8, one object per job with these fields (omit or use null for what you don't know; never invent details):
